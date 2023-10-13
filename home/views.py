@@ -31,3 +31,32 @@ def add_comment(request):
     comment.save()
 
     return HttpResponse("Success")
+
+@csrf_exempt
+def add_post(request):
+    paragraph = request.POST.get('paragraph','')
+    print(paragraph)
+
+    day = date.today()
+
+    post = Post(paragraph=paragraph,likes=0,dislikes=0)
+    post.save()
+
+    return HttpResponse("Success")
+
+@csrf_exempt
+def like_post(request):
+    pass
+
+@csrf_exempt
+def dislike_post(request):
+
+    pass
+
+@csrf_exempt
+def like_comment(request):
+    pass
+
+@csrf_exempt
+def dislike_comment(request):
+    pass

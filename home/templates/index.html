@@ -139,13 +139,13 @@ Header END -->
 					<div class="d-flex mb-3">
 						<!-- Post input -->
 						<form class="w-100">
-							<textarea class="form-control pe-4 border-0" rows="2" data-autoresize placeholder="Share your thoughts..."></textarea>
+							<textarea class="form-control pe-4 border-0" id="post_paragraph" rows="2" data-autoresize placeholder="Share your thoughts..."></textarea>
 						</form>
 					</div>
 					<!-- Share feed toolbar START -->
 					<ul class="nav nav-pills nav-stack small fw-normal">
 						<li class="nav-item">
-							<a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionPhoto"> <i class="bi bi-send-fill"> </i>Post</a>
+							<a class="nav-link bg-light py-1 px-2 mb-0" id="post_post"> <i class="bi bi-send-fill"> </i>Post</a>
 						</li>
 						
 					</ul>
@@ -183,7 +183,7 @@ Header END -->
 						<!-- Feed react START -->
 						<ul class="nav nav-stack py-3 small">
 							<li class="nav-item">
-								<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="Frances Guerrero<br> Lori Stevens<br> Billy Vasquez<br> Judy Nguyen<br> Larry Lawson<br> Amanda Reed<br> Louis Crawford"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked (56)</a>
+								<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="Frances Guerrero<br> Lori Stevens<br> Billy Vasquez<br> Judy Nguyen<br> Larry Lawson<br> Amanda Reed<br> Louis Crawford"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{x.likes}})</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a>

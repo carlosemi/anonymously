@@ -18,8 +18,23 @@ $(document).ready(function() {
          async: false,
          success : function(text)
          {
-             console.log("Success")
+             console.log("Comment Success")
          }
         });
+    })
+
+    $("#post_post").click(function(){
+        console.log("clicking post")
+        $.ajax({type: "POST",
+            url:'add_post/',
+            async: false,
+            data: {
+                paragraph: $("#post_paragraph").val()
+            },
+            success: function(text){
+                console.log("Post Success")
+            }
+    
+    })
     })
 });
