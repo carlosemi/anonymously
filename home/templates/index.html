@@ -154,7 +154,6 @@ Header END -->
 				<!-- Share feed END -->
 
 				<!-- Card feed item START -->
-
 				{% for x in posts reversed %}
 				<div class="card">
 					<!-- Card header START -->
@@ -183,7 +182,7 @@ Header END -->
 						<!-- Feed react START -->
 						<ul class="nav nav-stack py-3 small">
 							<li class="nav-item">
-								<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="Frances Guerrero<br> Lori Stevens<br> Billy Vasquez<br> Judy Nguyen<br> Larry Lawson<br> Amanda Reed<br> Louis Crawford"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{x.likes}})</a>
+								<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title=""> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{x.likes}})</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a>
@@ -198,17 +197,18 @@ Header END -->
 							
 							<!-- Comment box  -->
 							<form class="nav nav-item w-100 position-relative">
-								<textarea data-autoresize class="form-control pe-5 bg-light" id="comment_content" rows="1" placeholder="Add a comment..."></textarea>
-								<button class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0" id="add_comment" post_id="{{x.id}}" type="submit">
+								<textarea data-autoresize class="form-control pe-5 bg-light comment_content" id="comment_content_{{x.id}}" rows="1" placeholder="Add a comment..."></textarea>
+								<button class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0 add_comment" id="" post_id="{{x.id}}" type="submit">
 									<i class="bi bi-send-fill"> </i>
 								</button>
 							</form>
 						</div>
 
-						{% for i in comments %}
-						{% if i.post_id == x.id %}
+						
 						<!-- Comment wrap START -->
-						<ul class="comment-wrap list-unstyled">
+						<ul class="comment-wrap list-unstyled" id="comments_section_{{x.id}}">
+							{% for i in comments %}
+							{% if i.post_id == x.id %}
 							<!-- Comment item START -->
 							<li class="comment-item">
 								<div class="d-flex position-relative">
@@ -231,9 +231,10 @@ Header END -->
 									</div>
 								</div>
 							</li>
+							{% endif %}
+							{% endfor %}
+						
 						</ul>
-						{% endif %}
-						{% endfor %}
 					</div>
 					<!-- Card body END -->
 					<!-- Card footer START -->
