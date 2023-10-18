@@ -9,11 +9,13 @@ class Post(models.Model):
     paragraph = models.CharField(max_length=250)
     likes = models.IntegerField()
     dislikes = models.IntegerField()
-    date = models.TimeField(null=True)
+    date = models.TimeField()
+    num_comments = models.IntegerField()
+
 
 class Comment(models.Model):
     paragraph = models.CharField(max_length=250)
-    post_id = models.IntegerField(null=True)
-    likes = models.IntegerField(null=True)
-    dislikes = models.IntegerField(null=True)
-    date = models.TimeField(null=True)
+    post_id = models.IntegerField()
+    likes = models.IntegerField()
+    dislikes = models.IntegerField()
+    date = models.TimeField()
