@@ -83,7 +83,15 @@ def get_num_comments(request):
 
 @csrf_exempt
 def like_post(request):
-    pass
+    if request.method == 'POST':
+        post_id = request.Get.get('post_id','')
+        post = Post.objects.get(id=post_id)
+
+        post.likes += 1
+
+        post.save()
+
+        return JsonResponse({'post_likes': post.likes})
 
 @csrf_exempt
 def dislike_post(request):

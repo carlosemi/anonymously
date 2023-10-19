@@ -35,6 +35,7 @@ $(document).ready(function() {
             success: function(text){
                 fetchComments(post_id);
                 updateNumComments(post_id);
+                $(`#comment_content_${post_id}`).val('')
             }
         })
 
