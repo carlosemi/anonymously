@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'home',
     'bootstrap5',
     'django_bootstrap_icons',
-    'members'
+    'members',
 ]
 
 MIDDLEWARE = [

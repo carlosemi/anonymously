@@ -1,5 +1,15 @@
 $(document).ready(function() {
 
+    const sessionID = getCookie('session_id');
+
+    if (sessionID === undefined) {
+        $.get('/home/get_session_id/', function(data) {
+            console.log(data.session_id)
+            setCookie('session_id', data.session_id, 1); // Set the session ID cookie for 1 day
+        });
+    }
+
+
     //Creating a new post
     $("#post_post").click(function(){
         console.log("clicking post")
@@ -100,5 +110,51 @@ $(document).ready(function() {
                 
             }
         });
+    }
+
+    //Like a post
+    $(".like_post").click(function(){
+
+        var post_id = $(this).attr("post_id")
+
+        $.ajax({type: "POST",
+            url:'like_post/',
+            async: false,
+            data: {
+                post_id: post_id,
+                session_id: sessionID
+            },
+            success: function(response){
+                console.log(response)
+
+                if(response == "False"){
+                    console.log("Post is liked by you already") 
+                    return 
+                }
+
+                var post_likes = response.post_likes
+
+                console.log("Post likes = " + post_likes)
+
+                $(`#like_post_${post_id}`).empty();
+                $(`#like_post_${post_id}`).append(`
+                <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked (${post_likes})
+            `);
+            }
+        })
+
+    })
+
+    function setCookie(cookieName, cookieValue, expirationDays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (expirationDays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
+    }
+    
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
     }
 });

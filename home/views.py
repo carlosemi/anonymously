@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from .models import Post, Comment
+from .models import Post, Comment, Session, Post_Like
 from django.views.decorators.csrf import csrf_exempt
 from datetime import date, datetime
 from django.urls import reverse
 from django.http import JsonResponse
+import random
 
 def home(request):
     try:
+
         template = loader.get_template('index.html')
 
         posts = Post.objects.all().values()
@@ -19,9 +21,37 @@ def home(request):
             'comments': comments,
         }
         return HttpResponse(template.render(context, request))
-    except:
-        print("An exception occurred")
+    except Exception as error:
+        # handle the exception
+        print("An exception occurred:", error)
     
+
+def get_session_id(request):
+    try:
+        session_id = request.COOKIES.get('session_id')
+
+        
+        if session_id is None:
+            # Save the session ID to the database
+            session = Session()
+            session.save()
+
+            # Get the generated session ID
+            session_id = session.session_id
+
+        # Set the cookie with the session ID
+        response = JsonResponse({'session_id': session_id})
+        response.set_cookie('session_id', session_id)
+
+        print(session_id)
+        print("Cookie done")
+
+        return response
+
+    except Exception as error:
+        # handle the exception
+        print("An exception occurred:", error)
+
 
 @csrf_exempt
 def add_post(request):
@@ -30,7 +60,7 @@ def add_post(request):
         paragraph = request.POST.get('paragraph','')
         current_date = datetime.now()
 
-        post = Post(paragraph=paragraph,likes=0,dislikes=0,date=current_date,num_comments=0)
+        post = Post(paragraph=paragraph,num_likes=0,num_dislikes=0,date=current_date,num_comments=0)
         post.save()
 
 
@@ -84,14 +114,28 @@ def get_num_comments(request):
 @csrf_exempt
 def like_post(request):
     if request.method == 'POST':
-        post_id = request.Get.get('post_id','')
-        post = Post.objects.get(id=post_id)
+        post_id = request.POST.get('post_id','')
+        session_id = request.POST.get('session_id','')
 
-        post.likes += 1
+        post_like = Post_Like.objects.filter(id=post_id,session_id=session_id)
 
-        post.save()
+        print(post_like)
 
-        return JsonResponse({'post_likes': post.likes})
+        # If the query set is empty, then like the post, else return False value
+        # to show that the post was already liked
+        if not post_like:
+            post_like = Post_Like(post_id=post_id, session_id=session_id)
+            post_like.save()
+
+            #Update the post number of likes
+            post = Post.objects.get(id=post_id)
+
+            post.num_likes += 1
+            post.save()
+
+            return JsonResponse({'post_likes': post.num_likes})
+        else:
+            return HttpResponse("False")
 
 @csrf_exempt
 def dislike_post(request):
