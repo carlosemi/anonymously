@@ -75,11 +75,13 @@ $(document).ready(function() {
                                     </div>
                                     <ul class="nav nav-divider py-2 small">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#!">Likes(${comment.likes})</a>
+                                            <a class="nav-link like_comment" id="like_comment_${post_id}_${comment.id}" post_id="${post_id}" comment_id="${comment.id}" >Likes(${comment.num_likes})</a>
                                         </li>
+                                        <!-- 
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#!">Dislikes(${comment.dislikes})</a>
-                                        </li>
+                                             <a class="nav-link" href="#!">Dislikes(${comment.dislikes})</a>
+                                         </li>
+                                         -->
                                     </ul>
                                 </div>
                             </div>
@@ -143,6 +145,41 @@ $(document).ready(function() {
             }
         })
 
+    })
+
+    //Like a comment
+    $(document).on('click', '.like_comment', function(){
+
+        console.log("comment liked")
+        var post_id = $(this).attr("post_id")
+        var comment_id = $(this).attr("comment_id")
+
+        console.log(post_id + " " + comment_id)
+        $.ajax({type: "POST",
+            url:'like_comment/',
+            async: false,
+            data: {
+                post_id: post_id,
+                comment_id: comment_id,
+                session_id: sessionID
+            },
+            success: function(response){
+                console.log(response)
+
+                if(response == "False"){
+                    console.log("Comment is liked by you already") 
+                    return 
+                }
+
+                console.log('hooo yeahh')
+                var comment_num_likes = response.comment_num_likes
+
+                $(`#like_comment_${post_id}_${comment_id}`).empty()
+                $(`#like_comment_${post_id}_${comment_id}`).append(`
+                Likes(${comment_num_likes})
+            `);
+            }
+        })
     })
 
     function setCookie(cookieName, cookieValue, expirationDays) {

@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from .models import Post, Comment, Session, Post_Like
+from .models import Post, Comment, Session, Post_Like, Comment_Like
 from django.views.decorators.csrf import csrf_exempt
 from datetime import date, datetime
 from django.urls import reverse
 from django.http import JsonResponse
 import random
+from django.utils import timezone
+import pytz
 
 def home(request):
     try:
@@ -56,9 +58,12 @@ def get_session_id(request):
 @csrf_exempt
 def add_post(request):
 
+    phoenix_tz = pytz.timezone('America/Phoenix')
+    timezone.activate(phoenix_tz)
+
     if request.method == 'POST':
         paragraph = request.POST.get('paragraph','')
-        current_date = datetime.now()
+        current_date = datetime.now().astimezone(phoenix_tz)
 
         post = Post(paragraph=paragraph,num_likes=0,num_dislikes=0,date=current_date,num_comments=0)
         post.save()
@@ -76,7 +81,7 @@ def add_comment(request):
 
         current_date = datetime.now()
 
-        comment = Comment(paragraph=paragraph, post_id=post_id,likes=0,dislikes=0,date=current_date)
+        comment = Comment(paragraph=paragraph, post_id=post_id,num_likes=0, num_dislikes=0,date=current_date)
         comment.save()
 
         #Increase comment count of post associated to the comment
@@ -144,7 +149,31 @@ def dislike_post(request):
 
 @csrf_exempt
 def like_comment(request):
-    pass
+    if request.method == 'POST':
+        post_id = request.POST.get('post_id','')
+        comment_id = request.POST.get('comment_id', '')
+        session_id = request.POST.get('session_id','')
+
+        comment_like = Comment_Like.objects.filter(post_id=post_id,comment_id=comment_id,session_id=session_id)
+
+        print(comment_like)
+
+        # If the query set is empty, then like the comment, else return False value
+        # to show that the comment was already liked
+        if not comment_like:
+
+            comment_like = Comment_Like(post_id=post_id,comment_id=comment_id,session_id=session_id)
+            comment_like.save()
+
+            #Update the comment number of likes
+            comment = Comment.objects.get(id=comment_id,post_id=post_id)
+
+            comment.num_likes += 1
+            comment.save()
+
+            return JsonResponse({'comment_num_likes': comment.num_likes})
+        else:
+            return HttpResponse("False")
 
 @csrf_exempt
 def dislike_comment(request):

@@ -16,12 +16,17 @@ class Post(models.Model):
 class Comment(models.Model):
     paragraph = models.CharField(max_length=250)
     post_id = models.IntegerField()
-    likes = models.IntegerField()
-    dislikes = models.IntegerField()
+    num_likes = models.IntegerField()
+    num_dislikes = models.IntegerField()
     date = models.TimeField()
 
 class Post_Like(models.Model):
     post_id = models.IntegerField()
+    session_id = models.CharField(max_length=32)
+
+class Comment_Like(models.Model):
+    post_id = models.IntegerField()
+    comment_id = models.IntegerField()
     session_id = models.CharField(max_length=32)
 
 
