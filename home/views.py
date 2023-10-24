@@ -100,7 +100,8 @@ def add_comment(request):
         # handle the exception
         print("An exception occurred:", error)
 
-
+#   GET
+#   Get all the comments for a particular post
 def get_comments(request):
     if request.method == 'GET':
         post_id = request.GET.get('post_id','')

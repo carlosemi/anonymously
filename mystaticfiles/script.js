@@ -182,6 +182,18 @@ $(document).ready(function() {
         })
     })
 
+    //Fetch the comments when load comments is clicked
+    $(document).on('click', '.load_comments', function(){
+
+        var post_id = $(this).attr("post_id")
+
+        fetchComments(post_id)
+
+        $(`#load_comments_${post_id}`).empty()
+    })
+
+
+
     function setCookie(cookieName, cookieValue, expirationDays) {
         var d = new Date();
         d.setTime(d.getTime() + (expirationDays * 24 * 60 * 60 * 1000));

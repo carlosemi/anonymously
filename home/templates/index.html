@@ -210,37 +210,52 @@ Header END -->
 						
 						<!-- Comment wrap START -->
 						<ul class="comment-wrap list-unstyled" id="comments_section_{{x.id}}">
-							{% for i in comments %}
-								{% if i.post_id == x.id %}
-								<!-- Comment item START -->
-								<li class="comment-item">
-									<div class="d-flex position-relative">
-										<div class="ms-2">
-											<!-- Comment by -->
-											<div class="bg-light rounded-start-top-0 p-3 rounded">
-												<p class="small mb-0">{{i.paragraph}}</p>
+							{% if comments %}
+								{% for i in comments|slice:":3" %}
+									{% if i.post_id == x.id %}
+									<!-- Comment item START -->
+									<li class="comment-item">
+										<div class="d-flex position-relative">
+											<div class="ms-2">
+												<!-- Comment by -->
+												<div class="bg-light rounded-start-top-0 p-3 rounded">
+													<p class="small mb-0">{{i.paragraph}}</p>
+												</div>
+												<!-- Comment react -->
+												<ul class="nav nav-divider py-2 small">
+													<li class="nav-item">
+														<a class="nav-link like_comment" id="like_comment_{{x.id}}_{{i.id}}" post_id="{{x.id}}" comment_id="{{i.id}}" >Liked ({{i.num_likes}})</a>
+													</li>
+													<!-- <li class="nav-item">
+														<a class="nav-link" href="#!">Dislikes({{i.dislikes}})</a>
+													</li> -->
+													
+												</ul>
 											</div>
-											<!-- Comment react -->
-											<ul class="nav nav-divider py-2 small">
-												<li class="nav-item">
-													<a class="nav-link like_comment" id="like_comment_{{x.id}}_{{i.id}}" post_id="{{x.id}}" comment_id="{{i.id}}" >Liked ({{i.num_likes}})</a>
-												</li>
-												<!-- <li class="nav-item">
-													<a class="nav-link" href="#!">Dislikes({{i.dislikes}})</a>
-												</li> -->
-												
-											</ul>
 										</div>
-									</div>
-								</li>	
-								{% endif %}
-							{% endfor %}	
+									</li>	
+									{% endif %}
+								{% endfor %}	
+							{% else %}
+								<!-- No comments for this post -->
+							{% endif %}
 						</ul>
-							
 					</div>
 					<!-- Card body END -->
+					{% if x.num_comments > 3 %}
 					<!-- Card footer START -->
-					
+					<div class="card-footer border-0 pt-0" id="load_comments_{{x.id}}">
+						<!-- Load more comments -->
+						<a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center load_comments" post_id="{{x.id}}" data-bs-toggle="button" aria-pressed="true">
+							<div class="spinner-dots me-2">
+								<span class="spinner-dot"></span>
+								<span class="spinner-dot"></span>
+								<span class="spinner-dot"></span>
+							</div>
+							Load more comments 
+						</a>
+					</div>			
+					{% endif %}
 					<!-- Card footer END -->
 				</div>
 				
