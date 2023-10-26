@@ -9,7 +9,6 @@ $(document).ready(function() {
         });
     }
 
-
     //Creating a new post
     $("#post_post").click(function(){
         console.log("clicking post")
@@ -26,6 +25,13 @@ $(document).ready(function() {
     
         })
     })
+
+     // Call fetchComments for each post
+     $(".comments-section").each(function() {
+        var post_id = $(this).attr('post_id');
+        console.log("Fore each commentt section")
+        fetch3Comments(post_id);
+    });
 
     //Adding a comment to a certain post
     $(".add_comment").click(function(){
@@ -88,6 +94,50 @@ $(document).ready(function() {
                         </li>
                     `);
                 });
+            }
+        });
+    }
+    // Function to fetch and update comments
+    function fetch3Comments(post_id) {
+        console.log(post_id)
+        $.ajax({
+            type: "GET",
+            url: 'get_comments/',
+            data: {
+                post_id: post_id,
+            },
+            success: function(response){
+                console.log(response);
+                // Update the comments section here
+                // Example: $("#comments_section").html(response);
+                $(`#comments_section_${post_id}`).empty();
+                // Update the comments section
+                // Iterate only three times through the comments
+                var commentLimit = 3; // Change this to control the number of comments to display
+                for (var i = 0; i < Math.min(commentLimit, response.comments.length); i++) {
+                    var comment = response.comments[i]; 
+                    $(`#comments_section_${post_id}`).append(`
+                        <li class="comment-item">
+                            <div class="d-flex position-relative">
+                                <div class="ms-2">
+                                    <div class="bg-light rounded-start-top-0 p-3 rounded">
+                                        <p class="small mb-0">${comment.paragraph}</p>
+                                    </div>
+                                    <ul class="nav nav-divider py-2 small">
+                                        <li class="nav-item">
+                                            <a class="nav-link like_comment" id="like_comment_${post_id}_${comment.id}" post_id="${post_id}" comment_id="${comment.id}" >Likes(${comment.num_likes})</a>
+                                        </li>
+                                        <!-- 
+                                        <li class="nav-item">
+                                             <a class="nav-link" href="#!">Dislikes(${comment.dislikes})</a>
+                                         </li>
+                                         -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    `);
+                }
             }
         });
     }

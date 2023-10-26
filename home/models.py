@@ -10,7 +10,7 @@ class Post(models.Model):
     paragraph = models.CharField(max_length=250)
     num_likes = models.IntegerField()
     num_dislikes = models.IntegerField()
-    date = models.TimeField()
+    date = models.DateTimeField()
     num_comments = models.IntegerField()
 
 class Comment(models.Model):
@@ -18,7 +18,7 @@ class Comment(models.Model):
     post_id = models.IntegerField()
     num_likes = models.IntegerField()
     num_dislikes = models.IntegerField()
-    date = models.TimeField()
+    date = models.DateTimeField()
 
 class Post_Like(models.Model):
     post_id = models.IntegerField()

@@ -194,7 +194,7 @@ Header END -->
 						</ul>
 						<!-- Feed react END -->
 
-						
+		
 						<!-- Add comment -->
 						<div class="d-flex mb-3">
 							
@@ -209,36 +209,8 @@ Header END -->
 
 						
 						<!-- Comment wrap START -->
-						<ul class="comment-wrap list-unstyled" id="comments_section_{{x.id}}">
-							{% if comments %}
-								{% for i in comments|slice:":3" %}
-									{% if i.post_id == x.id %}
-									<!-- Comment item START -->
-									<li class="comment-item">
-										<div class="d-flex position-relative">
-											<div class="ms-2">
-												<!-- Comment by -->
-												<div class="bg-light rounded-start-top-0 p-3 rounded">
-													<p class="small mb-0">{{i.paragraph}}</p>
-												</div>
-												<!-- Comment react -->
-												<ul class="nav nav-divider py-2 small">
-													<li class="nav-item">
-														<a class="nav-link like_comment" id="like_comment_{{x.id}}_{{i.id}}" post_id="{{x.id}}" comment_id="{{i.id}}" >Liked ({{i.num_likes}})</a>
-													</li>
-													<!-- <li class="nav-item">
-														<a class="nav-link" href="#!">Dislikes({{i.dislikes}})</a>
-													</li> -->
-													
-												</ul>
-											</div>
-										</div>
-									</li>	
-									{% endif %}
-								{% endfor %}	
-							{% else %}
-								<!-- No comments for this post -->
-							{% endif %}
+						<ul class="comment-wrap list-unstyled comments-section" id="comments_section_{{x.id}}" post_id="{{x.id}}">
+						
 						</ul>
 					</div>
 					<!-- Card body END -->

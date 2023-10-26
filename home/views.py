@@ -63,7 +63,8 @@ def add_post(request):
 
     if request.method == 'POST':
         paragraph = request.POST.get('paragraph','')
-        current_date = datetime.now().astimezone(phoenix_tz)
+        # current_date = datetime.now().astimezone(phoenix_tz)
+        current_date = datetime.now().astimezone(phoenix_tz).strftime("%Y-%m-%d %H:%M:%S")
 
         post = Post(paragraph=paragraph,num_likes=0,num_dislikes=0,date=current_date,num_comments=0)
         post.save()
