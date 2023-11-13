@@ -4,7 +4,6 @@ $(document).ready(function() {
 
     if (sessionID === undefined) {
         $.get('/home/get_session_id/', function(data) {
-            console.log(data.session_id)
             setCookie('session_id', data.session_id, 1); // Set the session ID cookie for 1 day
         });
     }
@@ -29,7 +28,6 @@ $(document).ready(function() {
      // Call fetchComments for each post
      $(".comments-section").each(function() {
         var post_id = $(this).attr('post_id');
-        console.log("Fore each commentt section")
         fetch3Comments(post_id);
     });
 
@@ -38,8 +36,6 @@ $(document).ready(function() {
 
         var post_id = $(this).attr("post_id")
         var comment_content = $(`#comment_content_${post_id}`).val()
-
-        console.log("post id= " + post_id)
 
         $.ajax({type: "POST",
             url:'add_comment/',
@@ -66,7 +62,7 @@ $(document).ready(function() {
                 post_id: post_id,
             },
             success: function(response){
-                console.log(response);
+
                 // Update the comments section here
                 // Example: $("#comments_section").html(response);
                 $(`#comments_section_${post_id}`).empty();
@@ -99,7 +95,7 @@ $(document).ready(function() {
     }
     // Function to fetch and update comments
     function fetch3Comments(post_id) {
-        console.log(post_id)
+ 
         $.ajax({
             type: "GET",
             url: 'get_comments/',
@@ -107,7 +103,7 @@ $(document).ready(function() {
                 post_id: post_id,
             },
             success: function(response){
-                console.log(response);
+
                 // Update the comments section here
                 // Example: $("#comments_section").html(response);
                 $(`#comments_section_${post_id}`).empty();
@@ -177,7 +173,6 @@ $(document).ready(function() {
                 session_id: sessionID
             },
             success: function(response){
-                console.log(response)
 
                 if(response == "False"){
                     console.log("Post is liked by you already") 
@@ -185,8 +180,6 @@ $(document).ready(function() {
                 }
 
                 var post_likes = response.post_likes
-
-                console.log("Post likes = " + post_likes)
 
                 $(`#like_post_${post_id}`).empty();
                 $(`#like_post_${post_id}`).append(`
@@ -200,7 +193,6 @@ $(document).ready(function() {
     //Like a comment
     $(document).on('click', '.like_comment', function(){
 
-        console.log("comment liked")
         var post_id = $(this).attr("post_id")
         var comment_id = $(this).attr("comment_id")
 
@@ -221,7 +213,6 @@ $(document).ready(function() {
                     return 
                 }
 
-                console.log('hooo yeahh')
                 var comment_num_likes = response.comment_num_likes
 
                 $(`#like_comment_${post_id}_${comment_id}`).empty()

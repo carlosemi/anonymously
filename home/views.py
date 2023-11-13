@@ -9,6 +9,7 @@ from django.http import JsonResponse
 import random
 from django.utils import timezone
 import pytz
+from django.utils.timesince import timesince
 
 def home(request):
     try:
@@ -17,6 +18,9 @@ def home(request):
 
         posts = Post.objects.all().values()
         comments = Comment.objects.all().values()
+
+        for x in posts:
+            x['date'] = check_date(x['date'])
 
         context = {
             'posts': posts,
@@ -180,3 +184,49 @@ def like_comment(request):
 @csrf_exempt
 def dislike_comment(request):
     pass
+
+def check_date(date):
+    try:
+        print("Database date:")
+        print(date)
+
+        # Convert the UTC date to the local time zone
+        local_date = timezone.localtime(date)
+
+        print("Local date:")
+        print(local_date)
+
+        now = timezone.localtime(timezone.now())
+
+        print("Now date using:")
+        print(now)
+
+        diff = now - local_date
+
+        print("Diff: ", diff)
+
+        days = diff.days
+        hours = diff.seconds // 3600
+        minutes = (diff.seconds // 60) % 60
+
+        if days > 0:
+            if days == 1:
+                return f"{days} day ago"
+            else:
+                return f"{days} days ago"
+        elif hours > 0:
+            if hours == 1:
+                return f"{hours} hour ago"
+            else:
+                return f"{hours} hours ago"
+        elif minutes > 0:
+            if minutes == 1:
+                return f"{minutes} minute ago"
+            else:
+                return f"{minutes} minutes ago"
+        else:
+            return "recently"
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return "recently"
